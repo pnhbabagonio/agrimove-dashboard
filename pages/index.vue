@@ -32,16 +32,10 @@
       <div class="mt-6 text-center">
         <p class="mb-2 text-sm text-gray-600">Don't have an account?</p>
         <div class="flex flex-col gap-2">
-          <NuxtLink
-            to="/signup/farmer"
-            class="text-blue-600 hover:underline"
-          >
+          <NuxtLink to="/signup/farmer" class="text-blue-600 hover:underline">
             Sign up as Farmer
           </NuxtLink>
-          <NuxtLink
-            to="/signup/driver"
-            class="text-blue-600 hover:underline"
-          >
+          <NuxtLink to="/signup/driver" class="text-blue-600 hover:underline">
             Sign up as Driver
           </NuxtLink>
         </div>
@@ -52,14 +46,47 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
-const router = useRouter()
-
+// Dummy ref values (you can replace these with real login logic)
 const email = ref('')
 const password = ref('')
+const router = useRouter()
+
+// Dummy user (replace this with real login API result)
+const user = ref(null)
 
 const handleLogin = () => {
-  // Dummy login - skip validation
-  router.push('/admin/dashboard')
+  // Dummy logic: simulate login based on email
+  if (email.value === 'farmer@example.com') {
+    user.value = { role: 'farmer' }
+  } else if (email.value === 'driver@example.com') {
+    user.value = { role: 'driver' }
+  } else if (email.value === 'admin@example.com') {
+    user.value = { role: 'admin' }
+  } else {
+    user.value = null
+  }
+
+  if (!user.value) {
+    alert('Invalid login or user not found')
+    return
+  }
+
+  const role = user.value.role
+
+  switch (role) {
+    case 'admin':
+      router.replace('/admin/dashboard')
+      break
+    case 'farmer':
+      router.replace('/farmer/dashboard')
+      break
+    case 'driver':
+      router.replace('/driver/dashboard')
+      break
+    default:
+      router.replace('/unauthorized')
+  }
 }
 </script>

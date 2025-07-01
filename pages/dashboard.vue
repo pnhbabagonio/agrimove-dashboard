@@ -9,7 +9,7 @@ onMounted(() => {
   const role = user.value.role
 
   // Redirect based on role
-  if (role === 'admin') {
+  if (role === 'driver') {
     router.replace('/admin/dashboard')
   } else if (role === 'farmer') {
     router.replace('/farmer/dashboard')

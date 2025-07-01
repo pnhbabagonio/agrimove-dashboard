@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+  <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-black">
     <!-- Sidebar -->
     <Sidebar
       v-if="showLayout"
