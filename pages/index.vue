@@ -32,10 +32,10 @@
       <div class="mt-6 text-center">
         <p class="mb-2 text-sm text-gray-600">Don't have an account?</p>
         <div class="flex flex-col gap-2">
-          <NuxtLink to="/signup/farmer" class="text-blue-600 hover:underline">
+          <NuxtLink to="pages/signup/farmer" class="text-blue-600 hover:underline">
             Sign up as Farmer
           </NuxtLink>
-          <NuxtLink to="/signup/driver" class="text-blue-600 hover:underline">
+          <NuxtLink to="pages/signup/driver" class="text-blue-600 hover:underline">
             Sign up as Driver
           </NuxtLink>
         </div>
