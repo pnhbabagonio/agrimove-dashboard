@@ -1,18 +1,21 @@
 <template>
   <aside
     :class="[
-      'h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out flex flex-col',
+      'h-screen shadow-lg transition-all duration-300 ease-in-out flex flex-col',
       collapsed ? 'w-16' : 'w-64'
     ]"
+    :style="{ backgroundColor: 'var(--color-bg)' }"
   >
-    <!-- Logo & Toggle -->
-    <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+    <!-- Logo & Collapse Button -->
+    <div class="flex items-center justify-between p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
       <Logo v-if="!collapsed" />
 
       <button
         @click="$emit('toggle')"
-        class="text-green-600 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 rounded p-1 transition"
-        :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        class="p-1 rounded transition"
+        :style="{ color: 'var(--color-text-muted)' }"
+        @mouseover="hovering = true"
+        @mouseleave="hovering = false"
       >
         <svg
           v-if="collapsed"
@@ -21,9 +24,11 @@
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          :style="{ stroke: hovering ? 'var(--color-text)' : 'var(--color-text-muted)' }"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
         </svg>
+
         <svg
           v-else
           xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +36,7 @@
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          :style="{ stroke: hovering ? 'var(--color-text)' : 'var(--color-text-muted)' }"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -38,7 +44,7 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="mt-6 space-y-1 px-2 flex-1 overflow-y-auto">
+    <nav class="mt-6 px-2 flex-1 overflow-y-auto">
       <SidebarLink
         v-for="item in filteredLinks"
         :key="item.label"
@@ -52,14 +58,16 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import SidebarLink from './SidebarLink.vue'
 import Logo from './Logo.vue'
-import { computed } from 'vue'
 
 const props = defineProps({
   userRole: String,
   collapsed: Boolean,
 })
+
+const hovering = ref(false)
 
 const allLinks = {
   admin: [

@@ -1,17 +1,21 @@
 <template>
   <NuxtLink
     :to="to"
-    class="group flex items-center gap-3 p-3 rounded-md transition-all duration-200
-           text-gray-700 dark:text-white hover:bg-green-100 dark:hover:bg-green-700"
+    class="group flex items-center gap-3 p-3 rounded-md transition-all duration-200 hover:bg-[var(--color-primary-light)]"
     :aria-label="collapsed ? label : null"
+    style="color: var(--color-text)"
   >
+    <!-- Icon -->
     <component
       :is="iconComponent"
-      class="w-5 h-5 text-green-600 group-hover:text-green-700 transition duration-200"
+      class="w-5 h-5 transition duration-200"
+      style="color: var(--color-primary)"
     />
+
+    <!-- Label -->
     <span
       v-if="!collapsed"
-      class="truncate font-medium text-gray-700 dark:text-white group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200"
+      class="truncate font-medium transition-colors duration-200 group-hover:text-[var(--color-primary-dark)]"
     >
       {{ label }}
     </span>
