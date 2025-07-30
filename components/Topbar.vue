@@ -1,18 +1,20 @@
 <template>
-  <header class="bg-white dark:bg-gray-800 shadow px-4 py-3 flex items-center justify-between">
+  <header class="bg-primary text-white shadow px-4 py-3 flex items-center justify-between">
     <div><slot name="left" /></div>
 
     <div class="flex items-center gap-4">
       <!-- Notifications -->
       <div class="relative" ref="notificationRef">
-        <button @click="toggleNotifications" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600">
-          <BellIcon class="h-6 w-6" />
-          <span
-            v-if="unreadCount > 0"
-            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-          >
-            {{ unreadCount }}
-          </span>
+        <button
+            @click="toggleNotifications"
+            class="relative hover:opacity-80"
+            :style="{ color: 'var(--color-primary)' }">
+            <BellIcon class="h-6 w-6" />
+            <span
+              v-if="unreadCount > 0"
+              class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {{ unreadCount }}
+            </span>
         </button>
 
         <!-- Dropdown -->

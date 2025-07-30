@@ -3,7 +3,7 @@
     <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
       <component :is="iconComponent" class="h-6 w-6" />
     </div>
-    <div>
+        <div>
       <p class="text-sm text-gray-500 dark:text-gray-400">{{ title }}</p>
       <p class="text-xl font-semibold text-gray-900 dark:text-white">{{ value }}</p>
     </div>
