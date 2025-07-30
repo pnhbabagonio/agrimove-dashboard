@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen" style="background-color: var(--color-bg); color: var(--color-text)">
+  <div class="flex min-h-screen" style="background-color: #f5f5f5; color: var(--color-text)">
     <!-- Sidebar -->
     <Sidebar
       v-if="showLayout"

@@ -12,9 +12,15 @@
     </div>
 
     <!-- Farmer Table -->
-    <div class="overflow-x-auto bg-white dark:bg-gray-800 p-4 rounded shadow mt-4">
+    <div
+      class="overflow-x-auto p-4 rounded shadow mt-4"
+      style="background-color: var(--color-bg); color: var(--color-text);"
+    >
       <table class="min-w-full text-sm">
-        <thead class="bg-gray-100 dark:bg-gray-700 text-left">
+        <thead
+          class="text-left"
+          style="background-color: var(--color-bg-muted); color: var(--color-text);"
+        >
           <tr>
             <th class="px-4 py-2">Name</th>
             <th class="px-4 py-2">Farm</th>
@@ -26,7 +32,10 @@
           <tr
             v-for="farmer in filteredFarmers"
             :key="farmer.id"
-            class="border-b hover:bg-gray-50 dark:hover:bg-gray-700"
+            class="border-b cursor-pointer transition-colors"
+            style="border-color: var(--color-border);"
+            @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+            @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
           >
             <td class="px-4 py-2">{{ farmer.name }}</td>
             <td class="px-4 py-2">{{ farmer.farm_name }}</td>
@@ -40,6 +49,7 @@
         </tbody>
       </table>
     </div>
+
 
     <!-- Farmer Modal -->
     <FarmerModal v-if="selectedFarmer" :farmer="selectedFarmer" @close="selectedFarmer = null" />

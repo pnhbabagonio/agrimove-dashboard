@@ -1,14 +1,33 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex items-center gap-4">
-    <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-      <component :is="iconComponent" class="h-6 w-6" />
+  <div
+    class="rounded-lg shadow p-6 min-h-[120px] flex items-center gap-6"
+    style="background-color: var(--color-bg);"
+  >
+    <div
+      class="p-4 rounded-full"
+      style="background-color: var(--color-primary);"
+    >
+      <component
+        :is="iconComponent"
+        class="h-7 w-7"
+        style="
+          color: white;
+          stroke: white;
+          stroke-width: 1.5;
+        "
+      />
     </div>
-        <div>
-      <p class="text-sm text-gray-500 dark:text-gray-400">{{ title }}</p>
-      <p class="text-xl font-semibold text-gray-900 dark:text-white">{{ value }}</p>
+    <div>
+      <p class="text-base" style="color: var(--color-text-muted);">
+        {{ title }}
+      </p>
+      <p class="text-2xl font-semibold" style="color: var(--color-text);">
+        {{ value }}
+      </p>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import {

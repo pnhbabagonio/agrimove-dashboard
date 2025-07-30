@@ -10,9 +10,13 @@
     </div>
 
     <!-- Driver Table -->
-    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded shadow">
+    <div
+      class="overflow-x-auto rounded shadow"
+      style="background-color: var(--color-bg); color: var(--color-text);">
       <table class="min-w-full text-sm">
-        <thead class="bg-gray-100 dark:bg-gray-700 text-left">
+        <thead
+          class="text-left"
+          style="background-color: var(--color-bg-muted); color: var(--color-text);">
           <tr>
             <th class="px-4 py-2">Name</th>
             <th class="px-4 py-2">Vehicle</th>
@@ -21,11 +25,15 @@
             <th class="px-4 py-2">Tracking</th>
           </tr>
         </thead>
+
         <tbody>
           <tr
             v-for="driver in filteredDrivers"
             :key="driver.id"
-            class="border-b hover:bg-gray-50 dark:hover:bg-gray-700"
+            class="border-b transition-colors"
+            style="border-color: var(--color-border);"
+            @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+            @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
           >
             <td class="px-4 py-2">{{ driver.name }}</td>
             <td class="px-4 py-2">{{ driver.vehicle_type }}</td>
@@ -34,7 +42,7 @@
               <input
                 type="checkbox"
                 v-model="driver.available"
-                class="form-checkbox"
+                class="form-checkbox accent-[var(--color-primary)]"
               />
             </td>
             <td class="px-4 py-2">

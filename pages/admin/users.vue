@@ -14,9 +14,15 @@
     </div>
 
     <!-- User Table -->
-    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded shadow">
+    <div
+      class="overflow-x-auto rounded shadow"
+      style="background-color: var(--color-bg); color: var(--color-text);"
+    >
       <table class="min-w-full text-sm">
-        <thead class="bg-gray-100 dark:bg-gray-700 text-left">
+        <thead
+          style="background-color: var(--color-bg-muted); color: var(--color-text);"
+          class="text-left"
+        >
           <tr>
             <th class="px-4 py-2">Name</th>
             <th class="px-4 py-2">Email</th>
@@ -24,8 +30,16 @@
             <th class="px-4 py-2">Actions</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr v-for="user in filteredUsers" :key="user.id" class="border-b hover:bg-gray-50 dark:hover:bg-gray-700">
+          <tr
+            v-for="user in filteredUsers"
+            :key="user.id"
+            class="border-b cursor-pointer transition-colors"
+            style="border-color: var(--color-border);"
+            @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+            @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
+          >
             <td class="px-4 py-2">{{ user.name }}</td>
             <td class="px-4 py-2">{{ user.email }}</td>
             <td class="px-4 py-2 capitalize">{{ user.role }}</td>
@@ -38,6 +52,7 @@
         </tbody>
       </table>
     </div>
+
 
     <!-- Modal -->
     <UserModal v-if="selectedUser" :user="selectedUser" @close="selectedUser = null" />

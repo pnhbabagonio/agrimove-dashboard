@@ -20,27 +20,47 @@
         <!-- Dropdown -->
         <div
           v-if="showNotifications"
-          class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 border dark:border-gray-600 rounded shadow z-50"
+          class="absolute right-0 mt-2 w-80 rounded shadow z-50"
+          style="background-color: var(--color-bg); border: 1px solid var(--color-border);"
         >
-          <div class="p-3 border-b dark:border-gray-600 font-semibold">Notifications</div>
+          <div
+            class="p-3 font-semibold"
+            style="border-bottom: 1px solid var(--color-border); color: var(--color-text);"
+          >
+            Notifications
+          </div>
+
           <ul class="max-h-60 overflow-y-auto text-sm">
             <li
               v-for="(n, index) in notifications"
               :key="n.id"
-              class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+              class="px-4 py-2 cursor-pointer transition-colors"
               @click="markAsRead(index)"
+              style="color: var(--color-text);"
+              @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+              @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
             >
               <p>{{ n.message }}</p>
-              <p class="text-xs text-gray-400">{{ n.time }}</p>
+              <p class="text-xs" style="color: var(--color-text-muted);">{{ n.time }}</p>
             </li>
           </ul>
-          <div class="p-2 text-center border-t dark:border-gray-600">
-            <button @click="markAllAsRead" class="text-blue-600 text-xs hover:underline">Mark all as read</button>
+
+          <div
+            class="p-2 text-center"
+            style="border-top: 1px solid var(--color-border);"
+          >
+            <button
+              @click="markAllAsRead"
+              class="text-xs hover:underline"
+              style="color: var(--color-secondary);"
+            >
+              Mark all as read
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Theme Toggle -->
+      <!-- Theme Toggle pending fix-->
       <button @click="toggleTheme" class="text-gray-600 dark:text-gray-300 hover:text-blue-600">
         <component :is="theme === 'dark' ? SunIcon : MoonIcon" class="h-6 w-6" />
       </button>
@@ -49,22 +69,48 @@
       <div class="relative" ref="profileRef">
         <button @click="showDropdown = !showDropdown" class="flex items-center gap-2">
           <img src="https://i.pravatar.cc/40" class="w-8 h-8 rounded-full" alt="User" />
-          <span class="hidden md:inline font-medium">{{ user.name }}</span>
+          <span class="hidden md:inline font-medium" style="color: var(--color-text);">
+            {{ user.name }}
+          </span>
         </button>
+
         <div
           v-if="showDropdown"
-          class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded shadow z-50"
+          class="absolute right-0 mt-2 w-48 rounded shadow z-50"
+          style="background-color: var(--color-bg); border: 1px solid var(--color-border);"
         >
-          <div class="p-3 border-b dark:border-gray-600">
+          <!-- Header -->
+          <div
+            class="p-3"
+            style="border-bottom: 1px solid var(--color-border); color: var(--color-text);"
+          >
             <p class="text-sm font-semibold">{{ user.name }}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-300">{{ user.role.toUpperCase() }}</p>
+            <p class="text-xs" style="color: var(--color-text-muted);">{{ user.role.toUpperCase() }}</p>
           </div>
+
+          <!-- Menu Items -->
           <ul class="text-sm">
             <li>
-              <NuxtLink to="/profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Profile</NuxtLink>
+              <NuxtLink
+                to="/profile"
+                class="block px-4 py-2"
+                style="color: var(--color-text);"
+                @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+                @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
+              >
+                Profile
+              </NuxtLink>
             </li>
             <li>
-              <button @click="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
+              <button
+                @click="logout"
+                class="w-full text-left px-4 py-2"
+                style="color: var(--color-text);"
+                @mouseover="$event.currentTarget.style.backgroundColor = 'var(--color-bg-muted)'"
+                @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>
