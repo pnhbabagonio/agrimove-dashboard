@@ -1,13 +1,17 @@
 <template>
+  <!-- Fixed sidebar on the left -->
   <aside
     :class="[
-      'h-screen shadow-lg transition-all duration-300 ease-in-out flex flex-col',
+      'fixed top-0 left-0 h-screen transition-all duration-300 ease-in-out shadow-lg z-20 flex flex-col',
       collapsed ? 'w-16' : 'w-64'
     ]"
-    :style="{ backgroundColor: 'var(--color-bg)' }"
+    class="bg-[var(--color-bg)]"
   >
-    <!-- Logo & Collapse Button -->
-    <div class="flex items-center justify-between p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
+    <!-- Fixed Logo + Collapse Button -->
+    <div
+      class="flex items-center justify-between p-4 border-b bg-[var(--color-bg)]"
+      :style="{ borderColor: 'var(--color-border)' }"
+    >
       <Logo v-if="!collapsed" />
 
       <button
@@ -43,8 +47,8 @@
       </button>
     </div>
 
-    <!-- Navigation -->
-    <nav class="mt-6 px-2 flex-1 overflow-y-auto">
+    <!-- Scrollable navigation -->
+    <nav class="flex-1 overflow-y-auto px-2 mt-4 pb-6">
       <SidebarLink
         v-for="item in filteredLinks"
         :key="item.label"

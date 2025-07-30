@@ -1,20 +1,31 @@
 <template>
   <div class="space-y-6">
-    <h1 class="text-2xl font-bold">Analytics</h1>
+    <!-- Header -->
+    <div
+      class="rounded-lg shadow p-6 text-white"
+      style="background: linear-gradient(to right, #16a34a, #a3e635);"
+    >
+      <h1 class="text-3xl font-bold mb-2">Analytics Overview</h1>
+      <p class="text-base">Visual insights into your shipment and revenue performance.</p>
+    </div>
 
+    <!-- Chart Cards -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Shipment Status</h2>
+      <!-- Shipment Status Pie Chart -->
+      <div class="bg-white border border-green-200 rounded-lg shadow-sm p-5">
+        <h2 class="text-green-700 text-lg font-semibold mb-4">Shipment Status</h2>
         <PieChart :data="charts.shipmentStatus" />
       </div>
 
-      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Revenue Trend (30d)</h2>
+      <!-- Revenue Trend Line Chart -->
+      <div class="bg-white border border-green-200 rounded-lg shadow-sm p-5">
+        <h2 class="text-green-700 text-lg font-semibold mb-4">Revenue Trend (30d)</h2>
         <LineChart :data="charts.revenueTrend" />
       </div>
 
-      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow col-span-full">
-        <h2 class="text-lg font-semibold mb-4">Shipments per Driver</h2>
+      <!-- Driver Shipments Bar Chart -->
+      <div class="bg-white border border-green-200 rounded-lg shadow-sm p-5 col-span-full">
+        <h2 class="text-green-700 text-lg font-semibold mb-4">Shipments per Driver</h2>
         <BarChart :data="charts.driverShipments" />
       </div>
     </div>

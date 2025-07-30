@@ -1,6 +1,8 @@
 <template>
-  <div class="flex min-h-screen" style="background-color: #f5f5f5; color: var(--color-text)">
-    <!-- Sidebar -->
+  <div
+    class="min-h-screen bg-[#f5f5f5] text-[var(--color-text)]"
+  >
+    <!-- Sidebar (fixed) -->
     <Sidebar
       v-if="showLayout"
       :userRole="userRole"
@@ -8,11 +10,18 @@
       @toggle="isCollapsed = !isCollapsed"
     />
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col border-l" style="border-color: var(--color-border)">
+    <!-- Main Content Area -->
+    <div
+      :class="[
+        'flex flex-col border-l transition-all duration-300',
+        isCollapsed ? 'ml-16' : 'ml-64'
+      ]"
+      style="border-color: var(--color-border)"
+    >
       <!-- Topbar -->
       <Topbar v-if="showLayout" />
 
+      <!-- Page content -->
       <main class="p-4">
         <slot />
       </main>
