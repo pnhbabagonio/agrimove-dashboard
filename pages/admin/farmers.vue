@@ -31,9 +31,15 @@
     </div>
 
     <!-- Farmer Table -->
-    <div class="overflow-x-auto rounded shadow mt-4" style="background-color: var(--color-bg); color: var(--color-text);">
-      <table class="min-w-full text-sm">
-        <thead class="text-left" style="background-color: var(--color-bg-muted); border-bottom: 1px solid var(--color-border);">
+    <div
+      class="overflow-x-auto rounded-lg shadow border"
+      style="border-color: var(--color-border); background-color: var(--color-bg);"
+    >
+      <table class="min-w-full text-sm text-left">
+        <thead
+          class="text-sm font-semibold"
+          style="background-color: var(--color-primary-light); color: var(--color-primary-dark);"
+        >
           <tr>
             <th class="px-4 py-3">Name</th>
             <th class="px-4 py-3">Farm</th>

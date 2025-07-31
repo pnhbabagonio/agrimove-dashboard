@@ -128,6 +128,9 @@
 </template>
 
 <script setup>
+definePageMeta({ //This layout renders just the page, without the sidebar, topbar, or padding.
+  layout: 'empty'
+})
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 

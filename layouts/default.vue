@@ -39,6 +39,11 @@ const route = useRoute()
 const userRole = ref('admin')
 const isCollapsed = ref(false)
 
-const hideOnRoutes = ['/', '/signup/farmer', '/signup/driver']
-const showLayout = computed(() => !hideOnRoutes.includes(route.path))
+const hideOnRoutes = ['/', '/login', '/signup/farmer', '/signup/driver']
+
+// Check if current route starts with any excluded path
+const showLayout = computed(() => {
+  return !hideOnRoutes.includes(route.path)
+})
+
 </script>
