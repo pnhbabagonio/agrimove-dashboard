@@ -61,7 +61,7 @@
       </div>
 
       <!-- Theme Toggle pending fix-->
-      <button @click="toggleTheme" class="text-gray-600 dark:text-gray-300 hover:text-blue-600">
+      <button @click="toggleTheme" class="text-gray-600 dark:text-gray-300 hover:text-green-500">
         <component :is="theme === 'dark' ? SunIcon : MoonIcon" class="h-6 w-6" />
       </button>
 

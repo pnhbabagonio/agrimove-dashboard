@@ -1,11 +1,13 @@
 <template>
   <div v-if="isAllowed" class="space-y-4 p-4 max-w-screen-2xl mx-auto">
+
      <!-- Welcome Card (more compact) -->
         <div class="lg:col-span-1 rounded-lg shadow p-4 text-white flex flex-col justify-center"
       style="background: linear-gradient(to right, var(--color-primary), #fde047); min-height: 120px;">
         <h2 class="text-xl font-bold mb-1">Welcome back, Admin!</h2>
         <p class="text-xs opacity-90">Manage applications, monitor logistics</p>
       </div>
+      
     <!-- Top Section - Welcome and Stats -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
     
@@ -20,9 +22,11 @@
 
     <!-- Middle Section - Applicants and Calendar -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
       <!-- Applicants (2/3 width) -->
       <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-card p-4 rounded shadow">
+        <!-- Drivers -->
+        <div class="bg-white p-4 rounded shadow">
           <h3 class="font-semibold mb-3 flex items-center gap-2">
             <Icon name="truck" size="18" /> New Driver Applicants
           </h3>
@@ -30,68 +34,69 @@
             <li
               v-for="driver in applicants.drivers"
               :key="driver.id"
-              class="p-2 rounded bg-muted hover:bg-primary/10 transition text-sm"
-            >
+              class="p-2 rounded bg-[var(--color-bg-muted)] hover:bg-[var(--color-primary-light)] transition text-sm">
               <p class="font-medium">{{ driver.name }}</p>
-              <p class="text-muted-foreground text-xs">Vehicle: {{ driver.vehicle }}</p>
+              <p class="text-[var(--color-text-muted)] text-xs">Vehicle: {{ driver.vehicle }}</p>
             </li>
           </ul>
         </div>
 
-        <div class="bg-card p-4 rounded shadow">
+        <!-- Farmers -->
+        <div class="bg-white p-4 rounded shadow flex flex-col">
           <h3 class="font-semibold mb-3 flex items-center gap-2">
             <Icon name="leaf" size="18" /> New Farmer Applicants
           </h3>
-          <ul class="space-y-2">
+          <!-- Scrollable List -->
+          <ul class="space-y-2 overflow-y-auto" style="max-height: 240px;">
             <li
               v-for="farmer in applicants.farmers"
               :key="farmer.id"
-              class="p-2 rounded bg-muted hover:bg-primary/10 transition text-sm"
-            >
+              class="p-2 rounded bg-[var(--color-bg-muted)] hover:bg-[var(--color-primary-light)] transition text-sm">
               <p class="font-medium">{{ farmer.name }}</p>
-              <p class="text-muted-foreground text-xs">Farm: {{ farmer.farm }}</p>
+              <p class="text-[var(--color-text-muted)] text-xs">Farm: {{ farmer.farm }}</p>
             </li>
           </ul>
         </div>
       </div>
 
-      <!-- Calendar (1/3 width - taller) -->
-      <div class="bg-card p-4 rounded-lg shadow">
-        <h2 class="text-base font-semibold mb-3 flex items-center gap-2">
-          <Icon name="calendar" size="18" /> This Month
-        </h2>
-        <div class="h-[320px]"> <!-- Increased height -->
-          <VueCal
-            class="vuecal--full-height"
-            default-view="month"
-            hide-title
-            hide-view-selector
-            :time="false"
-            :events="calendarEvents"
-          />
-        </div>
+    <!-- Calendar (1/3 width - taller) -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <h2 class="text-base font-semibold mb-3 flex items-center gap-2">
+        <CalendarIcon class="w-5 h-5" /> This Month
+      </h2>
+      <div class="h-[320px]">
+        <VueCal
+          class="vuecal--full-height bg-white text-[var(--color-text)]"
+          default-view="month"
+          hide-title
+          hide-view-selector
+          :time="false"
+          :events="calendarEvents"/>
       </div>
     </div>
+  </div>
 
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div class="bg-card p-4 rounded shadow">
+      <div class="bg-white p-4 rounded shadow">
         <h3 class="font-semibold mb-3 flex items-center gap-2">
           <Icon name="pie-chart" size="18" /> Shipment Status
         </h3>
-        <div class="h-72"> <!-- Slightly taller -->
+        <div class="h-72">
           <PieChart :data="charts.shipmentStatus" />
         </div>
       </div>
-      <div class="bg-card p-4 rounded shadow">
+
+      <div class="bg-white p-4 rounded shadow">
         <h3 class="font-semibold mb-3 flex items-center gap-2">
           <Icon name="trending-up" size="18" /> Revenue Trend
         </h3>
-        <div class="h-72"> <!-- Slightly taller -->
+        <div class="h-72">
           <LineChart :data="charts.revenueTrend" />
         </div>
       </div>
     </div>
+
 
     <!-- Map Section -->
     <div class="bg-card p-4 rounded shadow">

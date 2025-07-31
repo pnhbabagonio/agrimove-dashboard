@@ -17,3 +17,15 @@ export const themeColors = {
 
   '--color-border': '#e5e7eb',
 }
+
+  const cellStyle = {
+    border: '1px solid var(--color-border)',
+    padding: '8px',
+    minHeight: '40px',
+    boxSizing: 'border-box',
+  }
+
+  const dayNumberStyle = {
+    fontWeight: 500,
+    color: 'var(--color-text-muted)',
+  }
