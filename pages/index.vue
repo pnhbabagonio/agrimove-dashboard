@@ -6,17 +6,17 @@
 
       <!-- Form -->
       <form @submit.prevent="handleLogin" class="space-y-5">
-        <!-- Email -->
+        <!-- Mobile Number -->
         <div>
-          <label class="block mb-1 text-sm font-medium text-[var(--color-text)]">Email</label>
+          <label class="block mb-1 text-sm font-medium text-[var(--color-text)]">Mobile Number</label>
           <input
-            type="email"
-            v-model="email"
+            type="tel"
+            v-model="mobileNo"
             class="block w-full px-4 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-            :class="{ 'border-red-500': emailError }"
-            placeholder="Enter your email"
+            :class="{ 'border-red-500': mobileNoError }"
+            placeholder="Enter your mobile number"
           />
-          <p v-if="emailError" class="text-sm text-red-600 mt-1">{{ emailError }}</p>
+          <p v-if="mobileNoError" class="text-sm text-red-600 mt-1">{{ mobileNoError }}</p>
         </div>
 
         <!-- Password -->
@@ -78,63 +78,78 @@
 </template>
 
 <script setup>
-definePageMeta({ //This layout renders just the page, without the sidebar, topbar, or padding.
-  layout: 'empty'
-})
+definePageMeta({ layout: 'empty' })
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useApi } from '~/composables/useApi'
 
-const email = ref('')
+const router = useRouter()
+
+const mobileNo = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 
-const emailError = ref('')
+const mobileNoError = ref('')
 const passwordError = ref('')
 
-const router = useRouter()
-
 const handleLogin = async () => {
-  emailError.value = ''
+  mobileNoError.value = ''
   passwordError.value = ''
 
-  if (!email.value) {
-    emailError.value = 'Email is required'
+  if (!mobileNo.value) {
+    mobileNoError.value = 'Mobile number is required'
   }
 
   if (!password.value) {
     passwordError.value = 'Password is required'
   }
 
-  if (emailError.value || passwordError.value) return
+  if (mobileNoError.value || passwordError.value) return
 
   loading.value = true
 
-  setTimeout(() => {
-    let role = null
-    if (email.value === 'admin@example.com') role = 'admin'
-    else if (email.value === 'farmer@example.com') role = 'farmer'
-    else if (email.value === 'driver@example.com') role = 'driver'
+  try {
+    const response = await useApi('/auth/jwt/create/', {
+      method: 'POST',
+      body: {
+        mobile_no: mobileNo.value,
+        password: password.value
+      }
+    })
 
-    if (!role) {
-      alert('Invalid credentials')
-      loading.value = false
-      return
-    }
+    const { access, refresh } = response
+
+    localStorage.setItem('access_token', access)
+    localStorage.setItem('refresh_token', refresh)
+
+    const payload = JSON.parse(atob(access.split('.')[1]))
+    const role = payload.role || 'admin'
 
     switch (role) {
       case 'admin':
         router.replace('/admin/dashboard')
         break
-      case 'farmer':
-        router.replace('/farmer/dashboard')
-        break
       case 'driver':
         router.replace('/driver/dashboard')
         break
+      default:
+        router.replace('/farmer/dashboard')
     }
+  } catch (error) {
+    const message = error?.data?.detail || 'Login failed'
 
+    // Smart handling of known backend errors
+    if (message.includes('credentials') || message.includes('No active account')) {
+      passwordError.value = 'Invalid mobile number or password'
+    } else if (message.includes('not activated')) {
+      mobileNoError.value = 'Account not activated. Please check your email or contact support.'
+    } else {
+      passwordError.value = 'Something went wrong. Please try again later.'
+    }
+  } finally {
     loading.value = false
-  }, 1000)
+  }
 }
 </script>
