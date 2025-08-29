@@ -4,6 +4,23 @@
       <!-- Title -->
       <h2 class="mb-6 text-2xl font-bold text-center text-[var(--color-primary-dark)]">Login</h2>
 
+      <!-- Development Notice -->
+      <!-- <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <p class="text-xs text-yellow-800">
+          <strong>Development Mode:</strong> Using dummy data while API is unavailable
+        </p>
+      </div> -->
+
+      <!-- Dummy Accounts Info -->
+      <!-- <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-xs text-blue-800 font-semibold mb-2">Test Accounts:</p>
+        <div class="text-xs text-blue-700 space-y-1">
+          <div><strong>Admin:</strong> 09123456789 / admin123</div>
+          <div><strong>Farmer:</strong> 09987654321 / farmer123</div>
+          <div><strong>Driver:</strong> 09111222333 / driver123</div>
+        </div>
+      </div> -->
+
       <!-- Form -->
       <form @submit.prevent="handleLogin" class="space-y-5">
         <!-- Mobile Number -->
@@ -38,7 +55,7 @@
               <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.967 9.967 0 012.291-6.348m14.356.294A9.964 9.964 0 0122 9c0 5.523-4.477 10-10 10a9.964 9.964 0 01-6.651-2.648M9.879 9.879A3 3 0 1114.12 14.12M15 12a3 3 0 00-3-3" />
+                  d="M13.875 18.825A10.05 10.05 0112 19c-5.523 0-10-4.477-10-10a9.967 9.967 0 012.291-6.348m14.356.294A9.964 9.964 0 0122 9c0 5.523-4.477 10-10 10a9.964 9.964 0 01-6.651-2.648M9.879 9.879A3 3 0 1114.12 14.12M15 12a3 3 0 00-3-3" />
               </svg>
               <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +99,6 @@ definePageMeta({ layout: 'empty' })
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useApi } from '~/composables/useApi'
 
 const router = useRouter()
 
@@ -93,6 +109,44 @@ const loading = ref(false)
 
 const mobileNoError = ref('')
 const passwordError = ref('')
+
+// Dummy user accounts for testing
+const dummyUsers = [
+  {
+    mobile_no: '09123456789',
+    password: 'admin123',
+    role: 'admin',
+    name: 'Admin User'
+  },
+  {
+    mobile_no: '09987654321',
+    password: 'farmer123',
+    role: 'farmer',
+    name: 'John Farmer'
+  },
+  {
+    mobile_no: '09111222333',
+    password: 'driver123',
+    role: 'driver',
+    name: 'Mike Driver'
+  }
+]
+
+// Generate dummy JWT token
+const generateDummyToken = (user) => {
+  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+  const payload = btoa(JSON.stringify({
+    user_id: Math.floor(Math.random() * 1000),
+    mobile_no: user.mobile_no,
+    role: user.role,
+    name: user.name,
+    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 24 hours
+    iat: Math.floor(Date.now() / 1000)
+  }))
+  const signature = btoa('dummy-signature')
+  
+  return `${header}.${payload}.${signature}`
+}
 
 const handleLogin = async () => {
   mobileNoError.value = ''
@@ -111,23 +165,29 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    const response = await useApi('/auth/jwt/create/', {
-      method: 'POST',
-      body: {
-        mobile_no: mobileNo.value,
-        password: password.value
-      }
-    })
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
-    const { access, refresh } = response
+    // Find matching user in dummy data
+    const user = dummyUsers.find(u => 
+      u.mobile_no === mobileNo.value && u.password === password.value
+    )
 
-    localStorage.setItem('access_token', access)
-    localStorage.setItem('refresh_token', refresh)
+    if (!user) {
+      passwordError.value = 'Invalid mobile number or password'
+      return
+    }
 
-    const payload = JSON.parse(atob(access.split('.')[1]))
-    const role = payload.role || 'admin'
+    // Generate dummy tokens
+    const accessToken = generateDummyToken(user)
+    const refreshToken = generateDummyToken({ ...user, type: 'refresh' })
 
-    switch (role) {
+    // Store tokens (same as original logic)
+    localStorage.setItem('access_token', accessToken)
+    localStorage.setItem('refresh_token', refreshToken)
+
+    // Route based on role
+    switch (user.role) {
       case 'admin':
         router.replace('/admin/dashboard')
         break
@@ -137,17 +197,10 @@ const handleLogin = async () => {
       default:
         router.replace('/farmer/dashboard')
     }
-  } catch (error) {
-    const message = error?.data?.detail || 'Login failed'
 
-    // Smart handling of known backend errors
-    if (message.includes('credentials') || message.includes('No active account')) {
-      passwordError.value = 'Invalid mobile number or password'
-    } else if (message.includes('not activated')) {
-      mobileNoError.value = 'Account not activated. Please check your email or contact support.'
-    } else {
-      passwordError.value = 'Something went wrong. Please try again later.'
-    }
+  } catch (error) {
+    console.error('Login error:', error)
+    passwordError.value = 'Something went wrong. Please try again later.'
   } finally {
     loading.value = false
   }
