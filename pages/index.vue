@@ -82,7 +82,9 @@ definePageMeta({ layout: 'empty' })
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useApi } from '~/composables/useApi'
+
+// Commented out because no longer used in manual login
+// import { useApi } from '~/composables/useApi'
 
 const router = useRouter()
 
@@ -93,6 +95,12 @@ const loading = ref(false)
 
 const mobileNoError = ref('')
 const passwordError = ref('')
+
+const credentials = [
+  { mobile: '09123456789', password: 'admin123', role: 'admin' },
+  { mobile: '09998887777', password: 'driver123', role: 'driver' },
+  { mobile: '09223334444', password: 'farmer123', role: 'farmer' }
+]
 
 const handleLogin = async () => {
   mobileNoError.value = ''
@@ -110,23 +118,31 @@ const handleLogin = async () => {
 
   loading.value = true
 
-  try {
-    const response = await useApi('/auth/jwt/create/', {
-      method: 'POST',
-      body: {
-        mobile_no: mobileNo.value,
-        password: password.value
-      }
-    })
+  // Removed actual API call and replaced with manual check
+  // try {
+  //   const response = await useApi('/auth/jwt/create/', {
+  //     method: 'POST',
+  //     body: {
+  //       mobile_no: mobileNo.value,
+  //       password: password.value
+  //     }
+  //   })
 
-    const { access, refresh } = response
+  setTimeout(() => {
+    // Find user in hardcoded credentials list
+    const user = credentials.find(
+      u => u.mobile == mobileNo.value && u.password == password.value
+    )
 
-    localStorage.setItem('access_token', access)
-    localStorage.setItem('refresh_token', refresh)
+    if (!user) {
+      passwordError.value = 'Invalid mobile number or password'
+      loading.value = false
+      return
+    }
 
-    const payload = JSON.parse(atob(access.split('.')[1]))
-    const role = payload.role || 'admin'
+    const role = user.role
 
+    // Route user based on role
     switch (role) {
       case 'admin':
         router.replace('/admin/dashboard')
@@ -137,19 +153,31 @@ const handleLogin = async () => {
       default:
         router.replace('/farmer/dashboard')
     }
-  } catch (error) {
-    const message = error?.data?.detail || 'Login failed'
 
-    // Smart handling of known backend errors
-    if (message.includes('credentials') || message.includes('No active account')) {
-      passwordError.value = 'Invalid mobile number or password'
-    } else if (message.includes('not activated')) {
-      mobileNoError.value = 'Account not activated. Please check your email or contact support.'
-    } else {
-      passwordError.value = 'Something went wrong. Please try again later.'
-    }
-  } finally {
     loading.value = false
-  }
+  }, 500)
+
+  //   const { access, refresh } = response
+
+  //   localStorage.setItem('access_token', access)
+  //   localStorage.setItem('refresh_token', refresh)
+
+  //   const payload = JSON.parse(atob(access.split('.')[1]))
+  //   const role = payload.role || 'admin'
+
+  // } catch (error) {
+  //   const message = error?.data?.detail || 'Login failed'
+
+  //   // Smart handling of known backend errors
+  //   if (message.includes('credentials') || message.includes('No active account')) {
+  //     passwordError.value = 'Invalid mobile number or password'
+  //   } else if (message.includes('not activated')) {
+  //     mobileNoError.value = 'Account not activated. Please check your email or contact support.'
+  //   } else {
+  //     passwordError.value = 'Something went wrong. Please try again later.'
+  //   }
+  // } finally {
+  //   loading.value = false
+  // }
 }
 </script>

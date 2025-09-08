@@ -104,11 +104,9 @@
         <Icon name="map-pin" size="18" /> Live Driver Locations
       </h3>
       <div class="h-96 rounded overflow-hidden bg-gray-100 relative"> <!-- Taller map -->
-        <img
-          src="https://th.bing.com/th/id/R.0fad1c6949f1f5438eab708cf4d6fb91?rik=62312%2bcQmhUIVA&riu=http%3a%2f%2ffiles01.pna.gov.ph%2fograph%2f2018%2f07%2f04%2fKabacan+Map+3_5b3c24dab37c70_43445874.jpg&ehk=Ax5z%2ftOn%2bkEyUZt%2fUvLzEEmGRVxrx4POXreM%2bRK8sqw%3d&risl=&pid=ImgRaw&r=0"
-          alt="Map placeholder"
-          class="w-full h-full object-cover"
-        />
+        <ClientOnly>
+        <DummyMap />
+        </ClientOnly>
         <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
       </div>
     </div>
@@ -124,12 +122,13 @@ definePageMeta({ layout: 'default' })
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
-
+import DummyMap from '~/components/maps/DummyMap.vue' // added for maps
 import StatCard from '@/components/dashboard/StatCard.vue'
 import PieChart from '@/components/charts/PieChart.vue'
 import LineChart from '@/components/charts/LineChart.vue'
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
+
 
 const { user } = useAuth()
 const router = useRouter()
